@@ -1,0 +1,25 @@
+services:
+  rabbitmq:
+    container_name: 'guide-rabbit'
+    image: 'rabbitmq:latest'
+    environment:
+      - 'RABBITMQ_DEFAULT_PASS=secret'
+      - 'RABBITMQ_DEFAULT_USER=myuser'
+    ports:
+      - '5672:5672'
+    healthcheck:
+      test: ['CMD', 'rabbitmq-diagnostics', '-q', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    container_name: 'guide-app'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - 'SPRING_RABBITMQ_HOST=rabbitmq'
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
