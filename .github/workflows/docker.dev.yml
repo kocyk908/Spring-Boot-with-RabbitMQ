@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout code
+      - name: Checkout of code
         uses: actions/checkout@v6
 
       - name: Set lower case repo name & tag
